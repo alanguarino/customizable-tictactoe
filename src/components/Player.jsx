@@ -2,21 +2,31 @@ import React from "react";
 // import { Children } from "react";
 import { useState } from "react";
 
-const Player = ({ name, symbol }) => {
+const Player = ({ initialName, symbol }) => {
+  const [playerName, setPlayerName] = useState(initialName);
   const [isEditing, setIsEditing] = useState(false);
 
   const toggleEditing = () => {
-    setIsEditing(!isEditing);
-    // setIsEditing(isEditing ? false : true); es lo mismo que hacer lo de arriba pero mas simple
+    setIsEditing((editing) => !editing);
+    //manera correcta de updatear el state
+  };
+
+  const handleChange = (event) => {
+    setPlayerName(event.target.value);
   };
 
   return (
     <li>
       <span className="player">
         {!isEditing ? (
-          <span className="player-name">{name}</span>
+          <span className="player-name">{playerName}</span>
         ) : (
-          <input type="text" required value={name} />
+          <input
+            type="text"
+            required
+            value={playerName}
+            onChange={handleChange}
+          />
         )}
         <span className="player-symbol">{symbol}</span>
       </span>
