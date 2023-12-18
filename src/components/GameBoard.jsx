@@ -1,26 +1,32 @@
-import { useState } from "react";
-
 const initialGameBoard = [
   [null, null, null],
   [null, null, null],
   [null, null, null],
 ];
 
-const GameBoard = ({ onSelectSquare, activePlayerSymbol }) => {
-  const [gameBoard, setGameBoard] = useState(initialGameBoard);
+const GameBoard = ({ onSelectSquare, turns }) => {
+  let gameBoard = initialGameBoard;
 
-  //how to update array in inmmutable way
-  function handleSelectSquare(rowIndex, colIndex) {
-    setGameBoard((prevGameBoard) => {
-      const updatedBoard = [
-        ...prevGameBoard.map((innerArray) => [...innerArray]),
-      ]; //new array with old elements
-      updatedBoard[rowIndex][colIndex] = activePlayerSymbol;
-      return updatedBoard;
-    });
+  for (const turn of turns) {
+    const { square, player } = turn;
+    const { row, col } = square;
 
-    onSelectSquare();
+    gameBoard[row][col] = player;
   }
+  // const [gameBoard, setGameBoard] = useState(initialGameBoard);
+
+  // //how to update array in inmmutable way
+  // function handleSelectSquare(rowIndex, colIndex) {
+  //   setGameBoard((prevGameBoard) => {
+  //     const updatedBoard = [
+  //       ...prevGameBoard.map((innerArray) => [...innerArray]),
+  //     ]; //new array with old elements
+  //     updatedBoard[rowIndex][colIndex] = activePlayerSymbol;
+  //     return updatedBoard;
+  //   });
+
+  //   onSelectSquare();
+  // }
 
   return (
     <ol id="game-board">
@@ -29,7 +35,7 @@ const GameBoard = ({ onSelectSquare, activePlayerSymbol }) => {
           <ol>
             {row.map((playerSymbol, colIndex) => (
               <li key={colIndex}>
-                <button onClick={() => handleSelectSquare(rowIndex, colIndex)}>
+                <button onClick={() => onSelectSquare(rowIndex, colIndex)}>
                   {playerSymbol}
                 </button>
               </li>
